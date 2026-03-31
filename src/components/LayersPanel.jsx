@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import useStore from '../store';
 import stickerCatalog from '../stickerCatalog';
 
@@ -19,6 +19,7 @@ export default function LayersPanel() {
   const gradient = useStore((s) => s.gradient);
   const selectLayer = useStore((s) => s.selectLayer);
   const deleteLayer = useStore((s) => s.deleteLayer);
+  const duplicateLayer = useStore((s) => s.duplicateLayer);
   const moveLayerUp = useStore((s) => s.moveLayerUp);
   const moveLayerDown = useStore((s) => s.moveLayerDown);
   const toggleLayerVisibility = useStore((s) => s.toggleLayerVisibility);
@@ -29,6 +30,15 @@ export default function LayersPanel() {
   const removeGradientStop = useStore((s) => s.removeGradientStop);
   const setGradientStopPosition = useStore((s) => s.setGradientStopPosition);
   const uploadRef = useRef(null);
+
+  // Right-click context menu state
+  const [ctxMenu, setCtxMenu] = useState(null);
+
+  useEffect(() => {
+    const close = () => setCtxMenu(null);
+    window.addEventListener('click', close);
+    return () => window.removeEventListener('click', close);
+  }, []);
 
   const handleUploadSticker = useCallback(
     (e) => {
@@ -181,6 +191,11 @@ export default function LayersPanel() {
             key={layer.id}
             className={`layer-item${selectedId === layer.id ? ' selected' : ''}`}
             onClick={() => selectLayer(layer.id)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              selectLayer(layer.id);
+              setCtxMenu({ x: e.clientX, y: e.clientY, layerId: layer.id });
+            }}
           >
             <span className="layer-icon">
               {layer.type === 'sticker' ? '\u{1F3F7}' : 'T'}
@@ -244,6 +259,58 @@ export default function LayersPanel() {
           <span>Background</span>
         </div>
       </div>
+
+      {/* Right-click context menu */}
+      {ctxMenu && (
+        <div
+          className="ctx-menu"
+          style={{ top: ctxMenu.y, left: ctxMenu.x }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={() => {
+              duplicateLayer(ctxMenu.layerId);
+              setCtxMenu(null);
+            }}
+          >
+            Duplicate
+          </button>
+          <button
+            onClick={() => {
+              moveLayerUp(ctxMenu.layerId);
+              setCtxMenu(null);
+            }}
+          >
+            Move Up
+          </button>
+          <button
+            onClick={() => {
+              moveLayerDown(ctxMenu.layerId);
+              setCtxMenu(null);
+            }}
+          >
+            Move Down
+          </button>
+          <button
+            onClick={() => {
+              toggleLayerVisibility(ctxMenu.layerId);
+              setCtxMenu(null);
+            }}
+          >
+            Toggle Visibility
+          </button>
+          <div className="ctx-divider" />
+          <button
+            className="danger"
+            onClick={() => {
+              deleteLayer(ctxMenu.layerId);
+              setCtxMenu(null);
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 }

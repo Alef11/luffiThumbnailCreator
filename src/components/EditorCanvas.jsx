@@ -16,8 +16,29 @@ export default function EditorCanvas({ stageRef }) {
   const selectLayer = useStore((s) => s.selectLayer);
   const updateLayer = useStore((s) => s.updateLayer);
   const addSticker = useStore((s) => s.addSticker);
+  const duplicateLayer = useStore((s) => s.duplicateLayer);
+  const deleteLayer = useStore((s) => s.deleteLayer);
 
   const [guides, setGuides] = useState({ snapH: false, snapV: false });
+
+  // Ctrl+D to duplicate, Delete/Backspace to remove selected layer
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      const sel = useStore.getState().selectedId;
+      if (!sel) return;
+      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        duplicateLayer(sel);
+      }
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+        e.preventDefault();
+        deleteLayer(sel);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [duplicateLayer, deleteLayer]);
 
   const [bgImage] = useImage('/assets/background/Background.png', 'anonymous');
 
