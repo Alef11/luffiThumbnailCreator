@@ -40,7 +40,7 @@ export default function EditorCanvas({ stageRef }) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [duplicateLayer, deleteLayer]);
 
-  const [bgImage] = useImage('/assets/background/Background.png', 'anonymous');
+  const [bgImage] = useImage(`${import.meta.env.BASE_URL}assets/background/Background.png`, 'anonymous');
 
   // Responsive scaling
   useEffect(() => {
