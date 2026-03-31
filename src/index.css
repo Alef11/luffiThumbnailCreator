@@ -1,0 +1,168 @@
+/* ── Reset & Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  background: #0d0d15;
+  color: #d4d4d8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #3f3f50; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* ── Inputs ── */
+input, select, textarea {
+  background: #1c1c2e;
+  border: 1px solid #2e2e42;
+  color: #d4d4d8;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #6366f1;
+}
+
+input[type="color"] {
+  padding: 1px;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #2e2e42;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 1px; }
+input[type="color"]::-webkit-color-swatch { border: none; border-radius: 3px; }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #2e2e42;
+  height: 4px;
+  border-radius: 2px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #6366f1;
+  border: 2px solid #1c1c2e;
+  cursor: pointer;
+}
+
+input[type="number"] {
+  width: 60px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+select {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 40px;
+}
+
+/* ── Buttons ── */
+button {
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #2e2e42;
+  border-radius: 4px;
+  background: #1c1c2e;
+  color: #d4d4d8;
+  padding: 5px 10px;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+button:hover {
+  background: #2a2a40;
+  border-color: #444;
+}
+button:active {
+  background: #333350;
+}
+button.primary {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #fff;
+}
+button.primary:hover {
+  background: #5558e6;
+}
+button.danger {
+  color: #f87171;
+}
+button.danger:hover {
+  background: #2a1a1a;
+  border-color: #f87171;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Utility ── */
+.section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #1e1e30;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.field-row label {
+  font-size: 11px;
+  color: #999;
+  min-width: 55px;
+  flex-shrink: 0;
+}
+
+.field-row input,
+.field-row select {
+  flex: 1;
+  min-width: 0;
+}
